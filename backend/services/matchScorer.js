@@ -17,23 +17,48 @@ const SENIORITY_RANGES = {
 };
 
 /**
- * Computes fuzzy skill matching between candidate skills and required skills.
- * Handles partial matches (e.g., "Node.js" matches "nodejs").
+ * Dictionary of common skill aliases (normalized).
+ */
+const SKILL_ALIASES = {
+  'restfulwebservices': ['restapis', 'restapi'],
+  'postgresql': ['postgres'],
+  'reactjs': ['react'],
+  'nodejs': ['node'],
+  'javascript': ['js'],
+  'typescript': ['ts'],
+  'amazonwebservices': ['aws'],
+  'googlecloudplatform': ['gcp'],
+  'uiux': ['ui', 'ux', 'userinterface', 'userexperience']
+};
+
+/**
+ * Computes strict skill matching between candidate skills and required skills.
+ * Uses exact matching + predefined aliases + strict typo guardrails.
  * @param {string[]} candidateSkills - Candidate's skills array
  * @param {string[]} requiredSkills - Required skills from JD
  * @returns {{ matched: string[], missing: string[], score: number }}
  */
 function computeSkillMatch(candidateSkills, requiredSkills) {
-  const candidateLower = candidateSkills.map(s => s.toLowerCase().replace(/[.\-\s]/g, ''));
+  const candidateNormalized = candidateSkills.map(s => s.toLowerCase().replace(/[.\-\s]/g, ''));
   const matched = [];
   const missing = [];
 
   for (const reqSkill of requiredSkills) {
-    const reqLower = reqSkill.toLowerCase().replace(/[.\-\s]/g, '');
-    const isMatch = candidateLower.some(cs =>
-      cs.includes(reqLower) || reqLower.includes(cs) ||
-      levenshteinSimilarity(cs, reqLower) > 0.8
-    );
+    const reqNormalized = reqSkill.toLowerCase().replace(/[.\-\s]/g, '');
+    const aliases = SKILL_ALIASES[reqNormalized] || [];
+    const validMatches = [reqNormalized, ...aliases];
+
+    const isMatch = candidateNormalized.some(cs => {
+      // 1. Exact match with required skill or its aliases
+      if (validMatches.includes(cs)) return true;
+      
+      // 2. Strict Levenshtein for typos (only for words > 4 chars)
+      if (cs.length > 4 && reqNormalized.length > 4) {
+        if (levenshteinSimilarity(cs, reqNormalized) > 0.85) return true;
+      }
+      
+      return false;
+    });
 
     if (isMatch) {
       matched.push(reqSkill);

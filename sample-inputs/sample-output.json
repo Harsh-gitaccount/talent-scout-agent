@@ -1,0 +1,44 @@
+{
+  "totalCandidatesEvaluated": 60,
+  "totalOutreachSimulated": 3,
+  "results": [
+    {
+      "id": "ind_001",
+      "name": "Rahul Sharma",
+      "currentRole": "Junior Java Developer",
+      "yearsExperience": 0,
+      "location": "Bangalore, India",
+      "matchScore": 92,
+      "interestScore": 95,
+      "combinedScore": 93,
+      "explanation": [
+        "✓ Matches 4/5 required skills including Core Java, Spring Boot, MySQL, and Git.",
+        "✓ Experience level perfectly aligns with the fresher requirement (0-1 years).",
+        "✓ Location matches requirement (Bangalore, India)."
+      ],
+      "recruiterSummary": "Enthusiastic fresh graduate based in Bangalore with strong core Java skills. Highly interested in the role, available immediately, and salary expectations perfectly align with the ₹4L-₹6L budget.",
+      "transcript": [
+        {
+          "turn": 1,
+          "role": "recruiter",
+          "message": "Hi Rahul, I noticed your recent graduation and projects using Java and Spring Boot. We have an entry-level Junior Java Developer role in Bangalore that might be a great fit to kickstart your career. Would you be open to a chat?"
+        },
+        {
+          "turn": 2,
+          "role": "candidate",
+          "message": "Hi! Thank you so much for reaching out. Yes, I am very interested! I'm eager to start my career as a backend developer. Could you share more details?"
+        },
+        {
+          "turn": 3,
+          "role": "recruiter",
+          "message": "It's an on-site role in Bangalore offering comprehensive training and a package of ₹4,00,000 to ₹6,00,000. When would you be available to start if selected?"
+        },
+        {
+          "turn": 4,
+          "role": "candidate",
+          "message": "That sounds amazing! I live in Bangalore and I am available to join immediately."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+Junior Java Developer (Fresher)
+
+We are a fast-growing tech consultancy based in Bangalore looking for a passionate and energetic Junior Java Developer to join our core backend team. This is an entry-level role perfect for recent graduates who are eager to learn and build scalable enterprise applications.
+
+Location: Bangalore, India (Work from Office - 5 Days a week)
+Experience: 0-1 years (Freshers welcome)
+
+Key Requirements:
+- Strong fundamental knowledge of Core Java, OOP concepts, and Data Structures.
+- Basic understanding of Spring Boot and RESTful web services.
+- Familiarity with writing SQL queries and relational databases (MySQL or PostgreSQL).
+- Experience with Git version control and basic Linux commands.
+- Good problem-solving skills and a strong desire to learn new technologies.
+
+Bonus Skills:
+- Academic projects or internships involving Java web development.
+- Basic knowledge of frontend technologies (HTML, CSS, JavaScript).
+
+What we offer:
+- Comprehensive training on enterprise frameworks.
+- Competitive fresher salary in the range of ₹4,00,000 - ₹6,00,000 LPA.
+- Direct mentorship from senior architects.

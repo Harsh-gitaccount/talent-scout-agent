@@ -18,9 +18,10 @@ export default function CandidateDrawer({ candidate, onClose, parsedJD }) {
   const generateQuestions = async () => {
     setLoadingQs(true);
     try {
-      const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost'
+      let API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost'
         ? 'http://localhost:3001'
         : '');
+      if (API_URL.endsWith('/')) API_URL = API_URL.slice(0, -1);
       const res = await fetch(`${API_URL}/api/interview-questions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

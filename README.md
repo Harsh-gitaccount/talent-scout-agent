@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
     <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="Node" />
     <img src="https://img.shields.io/badge/Groq-Llama%203.1-black?style=for-the-badge" alt="Groq" />
-    <img src="https://img.shields.io/badge/Gemini-1.5%20Flash-blue?style=for-the-badge" alt="Gemini" />
+    <img src="https://img.shields.io/badge/Gemini-2.5%20Flash-blue?style=for-the-badge" alt="Gemini" />
     <img src="https://img.shields.io/badge/Tailwind-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind" />
   </p>
 </div>

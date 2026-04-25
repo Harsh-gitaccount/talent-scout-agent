@@ -46,9 +46,9 @@ export function useAnalysis() {
       abortRef.current = controller;
 
       // Connect directly to backend for SSE (Vite proxy drops streaming connections)
-      const API_URL = window.location.hostname === 'localhost'
+      const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost'
         ? 'http://localhost:3001'
-        : '';
+        : '');
 
       const response = await fetch(`${API_URL}/api/analyze`, {
         method: 'POST',
@@ -178,7 +178,8 @@ export function useAnalysis() {
     if (results.length === 0) return;
 
     try {
-      const response = await fetch('/api/rerank', {
+      const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:3001' : '');
+      const response = await fetch(`${API_URL}/api/rerank`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ results, matchWeight: newWeight }),

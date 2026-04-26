@@ -130,7 +130,7 @@ export default function App() {
               <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 rounded-2xl p-5 animate-fade-in relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
                 <p className="text-sm text-red-700 dark:text-red-300 font-medium ml-2">❌ {error}</p>
-                {!error.includes('Invalid Job Description') && (
+                {!error.includes('Invalid Job Description') && !error.includes('API_RATE_LIMIT') && (
                   <p className="text-xs text-red-500 dark:text-red-400 mt-1 ml-2">Check your API keys and try again.</p>
                 )}
               </div>

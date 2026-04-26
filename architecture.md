@@ -84,13 +84,16 @@ Default: 60% Match, 40% Interest — adjustable via UI slider
 - **Rule-based filtering** ensures hard requirements aren't violated (e.g., minimum skill overlap threshold of 20%)
 - The combination provides both recall (semantic) and precision (rules)
 
-**Model choice**: all-MiniLM-L6-v2 runs locally with zero API cost, produces 384-dim vectors, and is fast enough for 60 candidates in < 5 seconds.
+**Model choice**: `all-MiniLM-L6-v2` runs locally with zero API cost, producing 384-dim vectors.
+
+**Optimization for Free Tier Deployment**: Because running the heavy Wasm embedding model synchronously for 60 candidates takes 6+ minutes on Render's 0.1vCPU Free Tier, we built a pipeline script to pre-compute and statically cache all candidate embeddings into a JSON file (acting as a lightweight Vector Database). The AI model is now strictly *lazy-loaded* only when a completely new JD is submitted, reducing server cold-start time from 6 minutes to under 2 seconds.
 
 ## Trade-offs
 
 | Decision | Trade-off | Rationale |
 |----------|-----------|-----------|
 | Local embeddings vs OpenAI | Lower quality but zero cost | Hackathon priority: no billing required |
+| Pre-computed embeddings cache | Embeddings don't auto-update if `candidates.json` is manually edited | Eliminates a massive 6-minute cold-boot CPU bottleneck on Render Free Tier |
 | Simulated conversations vs real | Not testing real candidate behavior | Demonstrates the concept; real integration would use email/LinkedIn APIs |
 | In-memory data vs database | Not persistent across restarts | Simplicity for demo; production would use PostgreSQL |
 | Top-3 Cap & Sequential Outreach | Slower, evaluates fewer candidates | Strict rate limits on free API tiers (Groq/Gemini) dictate sequential, capped calls. A paid API key would instantly unlock parallel processing for 50+ candidates. |

@@ -20,8 +20,14 @@ const SENIORITY_RANGES = {
  * Dictionary of common skill aliases (normalized).
  */
 const SKILL_ALIASES = {
+  'corejava': ['java'],
+  'java': ['corejava'],
   'restfulwebservices': ['restapis', 'restapi'],
+  'restapis': ['restfulwebservices', 'restapi'],
   'postgresql': ['postgres'],
+  'postgres': ['postgresql'],
+  'springframework': ['springboot', 'spring'],
+  'springboot': ['springframework', 'spring'],
   'reactjs': ['react'],
   'nodejs': ['node'],
   'javascript': ['js'],

@@ -29,7 +29,7 @@
 
 1. **User pastes JD** → React frontend sends POST to `/api/analyze`
 2. **Backend opens SSE stream** → Sends real-time events as each pipeline step completes
-3. **Step 1 — JD Parsing**: LLM extracts structured data (skills, seniority, salary, etc.)
+3. **Step 1 — JD Parsing**: LLM validates input (Prompt Injection/Garbage Input Protection) and extracts structured data (skills, seniority, salary, etc.)
 4. **Step 2 — Discovery**: JD embedding compared against pre-cached candidate embeddings via cosine similarity. Hard filter removes candidates with < 20% skill overlap.
 5. **Step 3 — Match Scoring**: Rule-based scoring (skills 40pts + seniority 20pts + location 10pts + semantic 30pts)
 6. **Step 4 — Outreach**: Top 3 candidates (capped for free API limits) get a 6-turn simulated conversation via LLM
@@ -40,7 +40,7 @@
 
 | Module | Purpose | Approach |
 |--------|---------|----------|
-| `jdParser.js` | Extract structured data from raw JD | LLM with structured JSON output; rule-based fallback |
+| `jdParser.js` | Extract structured data from raw JD | LLM with JSON output & Garbage Input Protection; rule-based fallback |
 | `candidateDiscovery.js` | Find relevant candidates | Cosine similarity on embeddings + skill overlap filter |
 | `matchScorer.js` | Score candidate-JD fit | Deterministic: skill matching (fuzzy), seniority range, location, semantic |
 | `outreachAgent.js` | Simulate recruiter-candidate dialogue | 6-turn LLM conversation with varying enthusiasm levels |

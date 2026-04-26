@@ -47,6 +47,11 @@ export async function parseJobDescription(jobDescription) {
     const response = await callLLM(prompt, { temperature: 0, maxTokens: 2048 });
     const parsed = extractJSON(response);
 
+    // 🚨 Prompt Injection / Garbage Input Protection
+    if (parsed.isValid === false) {
+      throw new Error('Invalid Job Description: The provided text does not appear to be a genuine job posting. Please provide a valid job description.');
+    }
+
     // Validate and fill in missing fields with defaults
     return {
       requiredSkills: ensureArray(parsed.requiredSkills),
@@ -63,6 +68,11 @@ export async function parseJobDescription(jobDescription) {
       softSkills: ensureArray(parsed.softSkills),
     };
   } catch (error) {
+    // If the error was explicitly thrown by our validation, re-throw it to abort
+    if (error.message && error.message.includes('Invalid Job Description:')) {
+      throw error;
+    }
+
     console.error('❌ JD parsing via LLM failed:', error.message);
     console.log('🔄 Attempting rule-based fallback parsing...');
     return fallbackParse(jobDescription);

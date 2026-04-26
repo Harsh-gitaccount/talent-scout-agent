@@ -25,6 +25,7 @@ Our custom pipeline runs asynchronously and streams real-time events via **Serve
 
 ### 1. 📄 Intelligent JD Parsing
 Uses **Groq (Llama 3.1 8B)** to read raw, unstructured Job Description text and extract structured JSON (required skills, years of experience, strict location policies, and salary bands).
+* **Prompt Injection Protection:** Features aggressive LLM pre-validation to detect and block garbage inputs, nursery rhymes, or conversational chatter, preventing hallucinated analyses.
 
 ### 2. 🔍 Vector Talent Discovery
 Runs a semantic similarity search using `all-MiniLM-L6-v2` embeddings to instantly filter a massive database down to the Top 15 closest contextual matches.

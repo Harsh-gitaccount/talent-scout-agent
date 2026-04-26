@@ -9,11 +9,13 @@
  * @returns {string} Formatted prompt for LLM
  */
 export function jdParsingPrompt(jobDescription) {
-  return `You are an expert technical recruiter. Analyze the following job description and extract structured information.
+  return `You are an expert technical recruiter. Analyze the following text and extract structured job description information.
 
 Return ONLY a valid JSON object with exactly these fields (no markdown, no explanation):
 
 {
+  "isValid": true,
+  "errorReason": null,
   "requiredSkills": ["skill1", "skill2"],
   "niceToHaveSkills": ["skill1", "skill2"],
   "seniorityLevel": "junior|mid|senior|lead|principal|staff",
@@ -29,6 +31,8 @@ Return ONLY a valid JSON object with exactly these fields (no markdown, no expla
 }
 
 Rules:
+- isValid: CRITICAL! Evaluate if the input text is a genuine job description. If it is garbage text, a joke, a nursery rhyme, conversational chatter, or completely unrelated to a job posting, set this to false.
+- errorReason: If isValid is false, explain exactly what the input appears to be (e.g., "Input appears to be a recipe for pancakes.", "Input is a casual conversation.", "Input is a random list of words."). Be specific about what you see. If isValid is true, set to null.
 - requiredSkills: Extract ALL technical skills explicitly listed as required. Include programming languages, frameworks, tools, and platforms.
 - niceToHaveSkills: Skills mentioned as "nice to have", "preferred", "bonus", or "a plus".
 - seniorityLevel: Infer from title, years of experience mentioned, and responsibility scope. If 0-2 years → junior, 2-5 → mid, 5-8 → senior, 8-12 → lead, 12+ → principal/staff.

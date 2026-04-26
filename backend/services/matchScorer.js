@@ -22,8 +22,14 @@ const SENIORITY_RANGES = {
 const SKILL_ALIASES = {
   'corejava': ['java'],
   'java': ['corejava'],
-  'restfulwebservices': ['restapis', 'restapi'],
-  'restapis': ['restfulwebservices', 'restapi'],
+  'oop': ['oopconcepts', 'objectoriented', 'objectprogramming', 'oops'],
+  'oopconcepts': ['oop', 'objectoriented', 'oops'],
+  'oops': ['oop', 'oopconcepts', 'objectoriented'],
+  'datastructures': ['dsa', 'ds', 'datastructuresandalgorithms'],
+  'dsa': ['datastructures', 'datastructuresandalgorithms'],
+  'restfulwebservices': ['restapis', 'restapi', 'rest'],
+  'restapis': ['restfulwebservices', 'restapi', 'rest'],
+  'rest': ['restfulwebservices', 'restapis', 'restapi'],
   'postgresql': ['postgres'],
   'postgres': ['postgresql'],
   'springframework': ['springboot', 'spring'],
@@ -57,8 +63,17 @@ function computeSkillMatch(candidateSkills, requiredSkills) {
     const isMatch = candidateNormalized.some(cs => {
       // 1. Exact match with required skill or its aliases
       if (validMatches.includes(cs)) return true;
+
+      // 2. Check candidate's own aliases against required skill
+      const candidateAliases = SKILL_ALIASES[cs] || [];
+      if (candidateAliases.includes(reqNormalized)) return true;
+
+      // 3. Containment check — e.g. "oopconcepts" contains "oop"
+      if (cs.length > 3 && reqNormalized.length > 3) {
+        if (cs.startsWith(reqNormalized) || reqNormalized.startsWith(cs)) return true;
+      }
       
-      // 2. Strict Levenshtein for typos (only for words > 4 chars)
+      // 4. Strict Levenshtein for typos (only for words > 4 chars)
       if (cs.length > 4 && reqNormalized.length > 4) {
         if (levenshteinSimilarity(cs, reqNormalized) > 0.85) return true;
       }

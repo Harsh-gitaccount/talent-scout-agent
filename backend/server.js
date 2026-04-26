@@ -102,10 +102,8 @@ async function startServer() {
     console.log(`   ✓ Loaded ${candidates.length} candidate profiles`);
 
     // Pre-cache embeddings for all candidates
-    console.log('🧠 Initializing embedding model and caching candidate embeddings...');
-    console.log('   (This may take 30-60 seconds on first run as the model downloads)');
+    console.log('🧠 Loading pre-computed candidate embeddings...');
     await initializeEmbeddings(candidates);
-    console.log('   ✓ All candidate embeddings cached');
 
     app.listen(PORT, () => {
       console.log('');

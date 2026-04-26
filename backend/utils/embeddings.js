@@ -6,8 +6,14 @@
  */
 
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /** @type {Object|null} Pipeline function from @xenova/transformers */
 let localPipeline = null;
@@ -19,29 +25,26 @@ const embeddingCache = new Map();
 let isInitialized = false;
 
 /**
- * Initializes the local embedding model and pre-caches candidate embeddings.
- * Called once on server startup.
- * @param {Array<Object>} candidates - Array of candidate profiles to pre-cache
+ * Initializes the embedding cache from the pre-computed JSON file.
+ * The heavy local model will only be loaded lazily when needed.
+ * @param {Array<Object>} candidates - Array of candidate profiles
  * @returns {Promise<void>}
  */
 export async function initializeEmbeddings(candidates) {
-  const provider = process.env.EMBEDDING_PROVIDER || 'local';
-
-  if (provider === 'local') {
-    console.log('   Loading all-MiniLM-L6-v2 model...');
-    const { pipeline } = await import('@xenova/transformers');
-    localPipeline = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-    console.log('   ✓ Embedding model loaded');
-  }
-
-  // Pre-cache all candidate embeddings
-  for (const candidate of candidates) {
-    const text = buildCandidateText(candidate);
-    const cacheKey = `candidate_${candidate.id}`;
-    if (!embeddingCache.has(cacheKey)) {
-      const embedding = await generateEmbedding(text);
-      embeddingCache.set(cacheKey, embedding);
+  try {
+    const cachePath = path.join(__dirname, '..', 'data', 'embeddingsCache.json');
+    if (fs.existsSync(cachePath)) {
+      const fileData = fs.readFileSync(cachePath, 'utf8');
+      const parsedCache = JSON.parse(fileData);
+      for (const [key, vector] of Object.entries(parsedCache)) {
+        embeddingCache.set(key, vector);
+      }
+      console.log(`   ✓ Loaded ${embeddingCache.size} pre-computed embeddings from cache`);
+    } else {
+      console.warn('   ⚠️ embeddingsCache.json not found! Cold start will be extremely slow.');
     }
+  } catch (error) {
+    console.warn('   ⚠️ Failed to load embeddings cache:', error.message);
   }
 
   isInitialized = true;
